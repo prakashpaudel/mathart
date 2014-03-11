@@ -17,6 +17,45 @@
 /hCenter h 3 div def 				% h/3
 /hCornerCenter 2 h 3 div mul def 	% 2*(h/3)
 
+%This function simply draws an outlined triangle
+%It requires the coordinates of where to center the triangle
+/outlineTriangle { 3 dict begin
+	0 setgray
+	/y exch def
+	/x exch def
+	newpath
+	x y hCornerCenter add moveto
+	x .5 add y hCenter neg add lineto
+	x -.5 add y hCenter neg add lineto
+	closepath
+	stroke
+
+end } def
+
+%This Function loops to draw the grid
+/drawGrid { 1 dict begin
+	0 h h 8 mul {
+	  /i exch def
+	  0 1 4 {
+		/j exch def
+		2 j sub h 4 mul i sub outlineTriangle % 2-j 4*h-i 1 1 1 1 dt
+	  } for
+	} for
+
+	180 rotate
+
+	0 h h 8 mul {
+	  /i exch def
+	  0 1 4 {
+		/j exch def
+		1.5 j sub h 4 mul hCenter neg add i sub outlineTriangle % 2-j (4*h-hCenter)-i 1 1 1 1 dt
+	  } for
+	} for
+
+	180 rotate
+	
+end } def
+
 % This function takes 5 inputs: x,y,br,r,g,b
 % x,y are the coordinates of the center of the triangle
 % br is how bright the triangle. It should be a number between 0-10
@@ -43,8 +82,8 @@
 	r br mul 0 0 setrgbcolor
 	newpath
 	dotx doty moveto
-	0 hCornerCenter lineto
-	.5 hCenter neg lineto
+	dotx doty hCornerCenter add lineto
+	dotx .5 add doty hCenter neg add lineto
 	closepath
 	fill
 	
@@ -52,8 +91,8 @@
 	0 g br mul 0 setrgbcolor
 	newpath
 	dotx doty moveto
-	.5 hCenter neg lineto
-	-.5 hCenter neg lineto
+	dotx .5 add doty hCenter neg add lineto
+	dotx -.5 add doty hCenter neg add lineto
 	closepath
 	fill
 	
@@ -61,13 +100,35 @@
 	0 0 b br mul setrgbcolor
 	newpath
 	dotx doty moveto
-	-.5 hCenter neg lineto
-	0 hCornerCenter lineto
+	dotx -.5 add doty hCenter neg add lineto
+	dotx doty hCornerCenter add lineto
 	closepath
 	fill
 	
 end } def
 
-0 0 1 1 1 1 dt
+%prints a triangle for each spot in the grid
+0 h h 8 mul {
+  /i exch def
+  0 1 4 {
+    /j exch def
+    2 j sub h 4 mul i sub 0 1 1 1 dt % 2-j 4-i 1 1 1 1 dt
+  } for
+} for
+
+180 rotate
+
+0 h h 8 mul {
+  /i exch def
+  0 1 4 {
+    /j exch def
+    1.5 j sub h 4 mul hCenter neg add i sub 1 1 1 1 dt % 2-j 4-i 1 1 1 1 dt
+  } for
+} for
+
+180 rotate
+
+drawGrid
+
 
 showpage
