@@ -1,0 +1,128 @@
+%! PS
+% The psuedo-3ColoringProject (P(3)CP)
+% Prakash Paudel
+% 2/23/14
+% 
+%
+% Scaling, defaults of drawing and definitions
+72 dup scale
+4.25 5.5 translate
+
+1 72 div setlinewidth
+1 setlinejoin
+1 setlinecap
+
+/s 1.0 def       					% Side length of triangle
+/h 3 sqrt 2 div s mul def 			% Height of triangle = (sqrt(3)/2)*s
+/hCenter h 3 div def 				% Height to the center = h/3
+/hCornerCenter 2 h 3 div mul def 	% Height from the center to a corner = 2*(h/3)
+/bend h 4 div def						% radius of movement of vertex = h/4
+
+%This function simply fills the triangle
+%It requires the coordinates of where to center the triangle and the setgray value
+/fillTriangle { 3 dict begin
+	/c exch def
+	/y exch def
+	/x exch def
+	
+	c setgray
+	newpath
+	x y hCornerCenter add moveto
+	x .5 add y hCenter neg add lineto
+	x -.5 add y hCenter neg add lineto
+	closepath
+	fill
+end } def
+
+
+%This function simply draws an outlined triangle
+%It requires the coordinates of where to center the triangle
+/outlineTriangle { 2 dict begin
+	0 setgray
+	/y exch def
+	/x exch def
+	newpath
+	x y hCornerCenter add moveto
+	x .5 add y hCenter neg add lineto
+	x -.5 add y hCenter neg add lineto
+	closepath
+	stroke
+end } def
+
+%This function takes 5 inputs: x,y,c,o,i
+% the x and y coordinates of the center of the triangle
+% c is the color of the triangle (0-2) (where r=0,g=1,b=2)
+% o is the orientation of the triangle (0-2)
+% i is the intensity of the color (0-9) (higher number = brighter)
+/dtpiece { 5 dict begin
+	/i exch def
+	/o exch def
+	/c exch def
+	/y exch def
+	/x exch def
+	/iIncrement bend 5 div def % length increment for each level change in intensity = r/5
+	
+	%setting the rgb values
+	/r1 0 def
+	/g1 0 def
+	/b1 0 def
+	c 0 eq
+	{/r1 1 def}
+	if
+	c 1 eq
+	{/g1 1 def}
+	if
+	c 2 eq
+	{/b1 1 def}
+	if
+	
+	r1 g1 b1 setrgbcolor
+	
+	%Drawing the triangle
+	
+	/yOffset i iIncrement mul bend sub def %(i*iIncrement)-bend
+	
+	newpath
+	x y moveto
+	o 120 mul rotate
+	0 yOffset rmoveto			%moveto (x, y+ yOffset)
+	.5 hCenter yOffset add neg rlineto
+	-1 0 rlineto
+	closepath 
+	stroke
+	
+	360 o 120 mul sub rotate		%Resets the rotation to upright
+end } def
+	
+% This function takes 5 inputs: x,y,r,g,b
+% x,y are the coordinates of the center of the triangle
+% r,g,b are the degree of red, blue and green in the triangle.
+% these should be a number between 0-9
+/dt { 5 dict begin
+	/b exch def
+	/g exch def
+	/r exch def
+	/y exch def
+	/x exch def
+	
+	%Drawing the red green and blue triangles
+	x y 0 fillTriangle
+	x y 0 0 r dtpiece
+	x y 1 1 g dtpiece
+	x y 2 2 b dtpiece
+	x y outlineTriangle
+	
+end } def
+
+-2 0 0 0 0 dt
+-1 0 3 3 3 dt
+0 0 5 5 5 dt
+1 0 7 7 7 dt
+2 0 9 9 9 dt
+-2 1 7 0 0 dt
+-1 1 9 5 3 dt
+0 1 9 9 3 dt
+1 1 9 6 6 dt
+2 1 9 1 7 dt
+
+showpage

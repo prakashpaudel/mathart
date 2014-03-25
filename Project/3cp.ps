@@ -5,6 +5,12 @@
 % 
 %
 % Scaling, defaults of drawing and definitions
+% .ppm format rgb 0-255 scaling
+% cmyk -cyan, magenta, yellow
+% light based vs. paint based
+% 
+
+
 72 dup scale
 4.25 5.5 translate
 
@@ -60,10 +66,9 @@ end } def
 % x,y are the coordinates of the center of the triangle
 % br is how bright the triangle. It should be a number between 0-10
 % r,g,b are the degree of red, blue and green in the triangle.
-% these should be a number between 0-2 as they are really an ordering of the colors
 %local variables dotx,doty to represent the coordinates of the inner vertex
 
-/dt { 6 dict begin
+/dt { 7 dict begin
 	/b exch def
 	/g exch def
 	/r exch def
@@ -73,7 +78,7 @@ end } def
 	/dotx x def
 	/doty y def
 	
-	%loop through i=r,g,b Come Back to this one
+	%loop through i=r,g,b *Come back to this
 		%rotate 120 degrees each time
 		%dotx = dotx + i*(s/3)*sin(60)
 		%doty = doty + i*(s/3)*cos(60)
@@ -107,28 +112,28 @@ end } def
 	
 end } def
 
-%prints a triangle for each spot in the grid
+%prints the upright triangles for the appropriate spots in the grid
 0 h h 8 mul {
   /i exch def
   0 1 4 {
     /j exch def
-    2 j sub h 4 mul i sub 0 1 1 1 dt % 2-j 4-i 1 1 1 1 dt
+    2 j sub h 4 mul i sub 1 1 1 1 dt % 2-j 4h-i 1 1 1 1 dt
   } for
 } for
 
 180 rotate
 
+%prints the upside down triangles for the appropriate spots in the grid
 0 h h 8 mul {
   /i exch def
   0 1 4 {
     /j exch def
-    1.5 j sub h 4 mul hCenter neg add i sub 1 1 1 1 dt % 2-j 4-i 1 1 1 1 dt
+    1.5 j sub h 4 mul hCenter neg add i sub 1 1 1 1 dt % 2-j (4h-hCenter)-i 1 1 1 1 dt
   } for
 } for
 
 180 rotate
 
 drawGrid
-
 
 showpage

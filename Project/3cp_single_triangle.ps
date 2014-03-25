@@ -1,0 +1,102 @@
+%! PS
+% The psuedo-3ColoringProject (P(3)CP)
+% Prakash Paudel
+% 2/23/14
+% 
+%
+% Scaling, defaults of drawing and definitions
+72 dup scale
+4.25 5.5 translate
+
+1 72 div setlinewidth
+1 setlinejoin
+1 setlinecap
+
+/s 1.0 def       					% length of side
+/h 3 sqrt 2 div s mul def 			% Height = (sqrt(3)/2)*s
+/hCenter h 3 div def 				% h/3
+/hCornerCenter 2 h 3 div mul def 	% 2*(h/3)
+
+%This function simply draws an outlined triangle
+%It requires the coordinates of where to center the triangle
+/outlineTriangle { 3 dict begin
+	0 setgray
+	/y exch def
+	/x exch def
+	newpath
+	x y hCornerCenter add moveto
+	x .5 add y hCenter neg add lineto
+	x -.5 add y hCenter neg add lineto
+	closepath
+	stroke
+
+end } def
+
+% This function takes 5 inputs: x,y,br,r,g,b
+% x,y are the coordinates of the center of the triangle
+% br is how bright the triangle. It should be a number between 0-1
+% r,g,b are the degree of red, blue and green in the triangle.
+%local variables dotx,doty to represent the coordinates of the inner vertex
+
+/dt { 7 dict begin
+	/b exch def
+	/g exch def
+	/r exch def
+	/br exch def
+	/y exch def
+	/x exch def
+	/dotx x def
+	/doty y def
+	
+	%loop through i=r,g,b *Come back to this
+		%rotate 120 degrees each time
+		%dotx = dotx + i*(s/3)*sin(60)
+		%doty = doty + i*(s/3)*cos(60)
+	
+	% Red
+	r br mul 0 0 setrgbcolor
+	newpath
+	dotx doty moveto
+	dotx doty hCornerCenter add lineto
+	dotx .5 add doty hCenter neg add lineto
+	closepath
+	fill
+	
+	% green
+	0 g br mul 0 setrgbcolor
+	newpath
+	dotx doty moveto
+	dotx .5 add doty hCenter neg add lineto
+	dotx -.5 add doty hCenter neg add lineto
+	closepath
+	fill
+	
+	% blue
+	0 0 b br mul setrgbcolor
+	newpath
+	dotx doty moveto
+	dotx -.5 add doty hCenter neg add lineto
+	dotx doty hCornerCenter add lineto
+	closepath
+	fill
+	
+end } def
+
+%prints a single triangle and its border
+% 0 0 1 1 1 1 dt
+% 0 0 outlineTriangle
+
+
+%prints a column of triangles of varying brightness
+0 0 0 1 1 1 dt
+0 0 outlineTriangle
+0 1 .25 1 1 1 dt
+0 1 outlineTriangle
+0 2 .5 1 1 1 dt
+0 2 outlineTriangle
+0 3 .75 1 1 1 dt
+0 3 outlineTriangle
+0 4 1 1 1 1 dt
+0 4 outlineTriangle
+
+showpage
