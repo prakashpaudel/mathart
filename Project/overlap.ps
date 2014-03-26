@@ -16,7 +16,7 @@
 /h 3 sqrt 2 div s mul def 			% Height of triangle = (sqrt(3)/2)*s
 /hCenter h 3 div def 				% Height to the center = h/3
 /hCornerCenter 2 h 3 div mul def 	% Height from the center to a corner = 2*(h/3)
-/bend h 4 div def						% radius of movement of vertex = h/4
+/bend h 4 div def					% radius of movement of vertex = h/4
 
 %This function simply fills the triangle
 %It requires the coordinates of where to center the triangle and the setgray value
@@ -89,7 +89,7 @@ end } def
 	.5 hCenter yOffset add neg rlineto
 	-1 0 rlineto
 	closepath 
-	stroke
+	fill
 	
 	360 o 120 mul sub rotate		%Resets the rotation to upright
 end } def
@@ -113,6 +113,17 @@ end } def
 	x y outlineTriangle
 	
 end } def
+
+% -4 0 0 0 0 dtpiece
+% -3 0 0 0 1 dtpiece
+% -2 0 0 0 2 dtpiece
+% -1 0 0 0 3 dtpiece
+% 0 0 0 0 4 dtpiece
+% 1 0 0 0 5 dtpiece
+% 2 0 0 0 6 dtpiece
+% 3 0 0 0 7 dtpiece
+% 4 0 0 0 8 dtpiece
+% 5 0 0 0 9 dtpiece
 
 -2 0 0 0 0 dt
 -1 0 3 3 3 dt

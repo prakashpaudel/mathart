@@ -1,16 +1,12 @@
 %! PS
-% The psuedo-3ColoringProject (P(3)CP)
+% The psuedo-3ColoringProject
+% Vertex-based Model
+% This model uses the 3 outer vertices and a flexible common middle vertex to represent a 'pixel'
 % Prakash Paudel
 % 2/23/14
 % 
-%
+
 % Scaling, defaults of drawing and definitions
-% .ppm format rgb 0-255 scaling
-% cmyk -cyan, magenta, yellow
-% light based vs. paint based
-% 
-
-
 72 dup scale
 4.25 5.5 translate
 
@@ -67,7 +63,6 @@ end } def
 % br is how bright the triangle. It should be a number between 0-10
 % r,g,b are the degree of red, blue and green in the triangle.
 %local variables dotx,doty to represent the coordinates of the inner vertex
-
 /dt { 7 dict begin
 	/b exch def
 	/g exch def
@@ -78,10 +73,11 @@ end } def
 	/dotx x def
 	/doty y def
 	
-	%loop through i=r,g,b *Come back to this
-		%rotate 120 degrees each time
-		%dotx = dotx + i*(s/3)*sin(60)
-		%doty = doty + i*(s/3)*cos(60)
+	%psuedocode for moving the center vertex
+		%loop through i=r,g,b
+			%rotate 120 degrees each time
+			%dotx = dotx + i*(s/3)*sin(60)
+			%doty = doty + i*(s/3)*cos(60)
 	
 	% Red
 	r br mul 0 0 setrgbcolor
