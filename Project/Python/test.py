@@ -27,33 +27,52 @@ def draw_rgb(c,x,y,col,o,i):
     p = p.transformed(t)
     
 ##    if(col == "red"):
-##        c.stroke(p, [color.rgb.red])
+##        c.fill(p, [color.rgb.red])
 ##    elif(col == "green"):
-##        c.stroke(p, [color.rgb.green])
+##        c.fill(p, [color.rgb.green])
 ##    else:
-##        c.stroke(p, [color.rgb.blue])
+##        c.fill(p, [color.rgb.blue])
     return p
 
 #
 def fill_intersection(c,p1,p2,col,i1,i2):
-    p1a, p1b, p1c = p1.split([0,.5,p1.end()-.5])
-    p2a, p2b, p2c = p2.split([0,.5,p2.end()-.5])
+
+    #Get original segment pieces
+    p1a, p1b, p1c = p1.split([0,(p1.arclen()-1)/2,(p1.arclen()-1)/2+1])
+    p2a, p2b, p2c = p2.split([0,(p2.arclen()-1)/2,(p2.arclen()-1)/2+1])
     if(i1>5 and i2>5):
-        p1_inter = p1a
-        p2_inter = p2b
+        p1_seg = p1b
+        p2_seg = p2a
     elif((i1>5 and i2<=5) or (i1<=5 and i2>5)):
-        p1_inter = p1b
-        p2_inter = p2b
-    isects_p1, isect_p2 = p1_inter.intersect(p2_inter)
-    arc1, arc2 = circle.split(isects_circle)
-    if arc1.arclen() < arc2.arclen():
-        arc = arc1
-    else:
-        arc = arc2
-         
-    isects_line.sort()
-    line1, line2, line3 = line.split(isects_line)
-    segment = line2 << arc
+        p1_seg = p1b
+        p2_seg = p2a
+    c.stroke(p1_seg, [color.rgb.red])
+    c.stroke(p2_seg, [color.rgb.green])
+##    (p1x1,p1y1) = p1.at(0)
+##    (p1x2,p1y2) = p1.at(p1.end()-.5)
+##    (p2x1,p2y1) = p2.at(0)
+##    (p2x2,p2y2) = p2.at(.5)
+##    p1_inter = path.line(p1x1,p1y1,p1x2,p1y2)
+##    p2_inter = path.line(p2x1,p2y1,p2x2,p2y2)
+####    c.stroke(p1_inter, [color.rgb.red])
+####    c.stroke(p2_inter, [color.rgb.green])
+##    isect_p1, isect_p2 = p1_inter.intersect(p2_inter)
+##    p1_len1, p1_len2 = p1_inter.split(isect_p1)
+##    p2_len1, p2_len2 = p2_inter.split(isect_p2)
+##    
+##
+####    segment = p1b << p1_len1 << p2_len1 << p2a
+##
+##    segment = p2_seg << p2_len1 << p1_len1 << p1_seg
+##
+##    segment.append(path.closepath())
+##    
+    
+##    c.stroke(p1b, [color.rgb.red])
+##    c.stroke(p2a, [color.rgb.green])
+    
+##    c.stroke(segment, [color.cmyk.Yellow])
+
 
 #Draw a complete triangle pixel given c,x,y,r,g,b
 #Where c is the canvas
@@ -71,13 +90,16 @@ def draw_triangle(c,x,y,r,g,b):
     pGreen = draw_rgb(c,x,y,"green",1,g)
     pBlue = draw_rgb(c,x,y,"blue",2,b)
 
+##    c.stroke(pRed, [color.rgb.red])
+##    c.stroke(pGreen, [color.rgb.green])
+
     fill_intersection(c,pRed,pGreen,"yellow",r,g)
 
     
     
 #Main Commands
 c = canvas.canvas()
-draw_triangle(c,0,0,9,5,9)
+draw_triangle(c,0,0,9,4,1)
 
 c.writeEPSfile()
 c.writePDFfile()
