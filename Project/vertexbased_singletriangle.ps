@@ -1,9 +1,12 @@
 %! PS
-% The psuedo-3ColoringProject (P(3)CP)
+% The tri-color triangle project
 % Prakash Paudel
 % 2/23/14
-% 
-%
+
+% This file is for the vertex based representation for a single pixel
+% The main function dt, uses helper functions, drawGrid and outlineTriangle
+% to create the desired representation.
+
 % Scaling, defaults of drawing and definitions
 72 dup scale
 4.25 5.5 translate
@@ -12,13 +15,14 @@
 1 setlinejoin
 1 setlinecap
 
+% Constants and Global variables
 /s 1.0 def       					% length of side
 /h 3 sqrt 2 div s mul def 			% Height = (sqrt(3)/2)*s
 /hCenter h 3 div def 				% h/3
 /hCornerCenter 2 h 3 div mul def 	% 2*(h/3)
 
-%This function simply draws an outlined triangle
-%It requires the coordinates of where to center the triangle
+% This function simply draws an outlined triangle
+% It requires the coordinates of the center of the triangle: (x,y)
 /outlineTriangle { 3 dict begin
 	0 setgray
 	/y exch def
@@ -32,12 +36,13 @@
 
 end } def
 
+% This is the main function of the file. It outputs a triangle 
 % This function takes 5 inputs: x,y,br,r,g,b
 % x,y are the coordinates of the center of the triangle
-% br is how bright the triangle. It should be a number between 0-1
+% br is how bright the triangle. It should be a number between 0-10
 % r,g,b are the degree of red, blue and green in the triangle.
-%local variables dotx,doty to represent the coordinates of the inner vertex
-/dt { 7 dict begin
+% local variables dotx,doty to represent the coordinates of the inner vertex
+/dt { 6 dict begin
 	/b exch def
 	/g exch def
 	/r exch def
@@ -47,10 +52,11 @@ end } def
 	/dotx x def
 	/doty y def
 	
-	%loop through i=r,g,b *Come back to this
-		%rotate 120 degrees each time
-		%dotx = dotx + i*(s/3)*sin(60)
-		%doty = doty + i*(s/3)*cos(60)
+	%psuedocode for moving the center vertex **Not needed in the end
+		%loop through i=r,g,b
+			%rotate 120 degrees each time
+			%dotx = dotx + i*(s/3)*sin(60)
+			%doty = doty + i*(s/3)*cos(60)
 	
 	% Red
 	r br mul 0 0 setrgbcolor
@@ -81,14 +87,14 @@ end } def
 	
 end } def
 
-%prints a single triangle and its border
-% 0 0 1 1 1 1 dt
-% 0 0 outlineTriangle
-
-
-%prints a column of triangles of varying brightness
+% prints a single triangle and its border
 0 0 1 1 1 1 dt
 0 0 outlineTriangle
+
+
+% prints a column of triangles of varying brightness
+% 0 0 1 1 1 1 dt
+% 0 0 outlineTriangle
 % 0 1 .25 1 1 1 dt
 % 0 1 outlineTriangle
 % 0 2 .5 1 1 1 dt

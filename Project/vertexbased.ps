@@ -1,10 +1,12 @@
 %! PS
-% The psuedo-3ColoringProject
-% Vertex-based Model
-% This model uses the 3 outer vertices and a flexible common middle vertex to represent a 'pixel'
+% The tri-color triangle project
 % Prakash Paudel
-% 2/23/14
-% 
+% 2/28/14
+
+% This file is for the vertex based representation with a grid format.
+% The main function dt, uses helper functions, drawGrid and outlineTriangle
+% to create the desired representation.
+%
 
 % Scaling, defaults of drawing and definitions
 72 dup scale
@@ -14,13 +16,15 @@
 1 setlinejoin
 1 setlinecap
 
+
+% Constants and Global variables
 /s 1.0 def       					% length of side
 /h 3 sqrt 2 div s mul def 			% Height = (sqrt(3)/2)*s
 /hCenter h 3 div def 				% h/3
 /hCornerCenter 2 h 3 div mul def 	% 2*(h/3)
 
-%This function simply draws an outlined triangle
-%It requires the coordinates of where to center the triangle
+% This function simply draws an outlined triangle
+% It requires the coordinates of the center of the triangle: (x,y)
 /outlineTriangle { 3 dict begin
 	0 setgray
 	/y exch def
@@ -34,7 +38,9 @@
 
 end } def
 
-%This Function loops to draw the grid
+% This function uses double for-loops to draw the grid
+% Using the outlineTriangle helper function, it creates a grid of triangles,
+% which is used by the dt function to draw in triangles
 /drawGrid { 1 dict begin
 	0 h h 8 mul {
 	  /i exch def
@@ -58,12 +64,13 @@ end } def
 	
 end } def
 
+% This is the main function of the file. It outputs a triangle 
 % This function takes 5 inputs: x,y,br,r,g,b
 % x,y are the coordinates of the center of the triangle
 % br is how bright the triangle. It should be a number between 0-10
 % r,g,b are the degree of red, blue and green in the triangle.
-%local variables dotx,doty to represent the coordinates of the inner vertex
-/dt { 7 dict begin
+% local variables dotx,doty to represent the coordinates of the inner vertex
+/dt { 6 dict begin
 	/b exch def
 	/g exch def
 	/r exch def
@@ -73,7 +80,7 @@ end } def
 	/dotx x def
 	/doty y def
 	
-	%psuedocode for moving the center vertex
+	%psuedocode for moving the center vertex **Not needed in the end
 		%loop through i=r,g,b
 			%rotate 120 degrees each time
 			%dotx = dotx + i*(s/3)*sin(60)
@@ -108,7 +115,7 @@ end } def
 	
 end } def
 
-%prints the upright triangles for the appropriate spots in the grid
+% prints the upright triangles for the appropriate spots in the grid
 0 h h 8 mul {
   /i exch def
   0 1 4 {
@@ -119,7 +126,7 @@ end } def
 
 180 rotate
 
-%prints the upside down triangles for the appropriate spots in the grid
+% prints the upside down triangles for the appropriate spots in the grid
 0 h h 8 mul {
   /i exch def
   0 1 4 {
@@ -128,8 +135,10 @@ end } def
   } for
 } for
 
+%Fixing the rotation of the canvas back to upright
 180 rotate
 
+%outlining the triangles appropriately
 drawGrid
 
 showpage

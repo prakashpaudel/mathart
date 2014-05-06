@@ -1,9 +1,16 @@
 %! PS
-% The psuedo-3ColoringProject (P(3)CP)
+% The tri-color triangle project
 % Prakash Paudel
-% 2/23/14
+% 3/10/2014
 % 
+% This file is for the independent triangle based representation
+% The main function dt, uses helper functions dtpiece, fillTriangle and outlineTriangle
+% to create the desired representation.
 %
+% Note that the global variables are the same apart from bend, which defines the
+% maximum bend of the central vertex for each independent triangle.
+
+
 % Scaling, defaults of drawing and definitions
 72 dup scale
 4.25 5.5 translate
@@ -18,8 +25,9 @@
 /hCornerCenter 2 h 3 div mul def 	% Height from the center to a corner = 2*(h/3)
 /bend h 4 div def					% radius of movement of vertex = h/4
 
-%This function simply fills the triangle
-%It requires the coordinates of where to center the triangle and the setgray value
+% This function simply fills the triangle
+% It requires the coordinates of where to center the triangle and the setgray value
+% The inputs are x,y,c. the x,y coordinates and the setgray color value, c.
 /fillTriangle { 3 dict begin
 	/c exch def
 	/y exch def
@@ -35,8 +43,8 @@
 end } def
 
 
-%This function simply draws an outlined triangle
-%It requires the coordinates of where to center the triangle
+% This function simply draws an outlined triangle
+% It requires the coordinates of where to center the triangle
 /outlineTriangle { 2 dict begin
 	0 setgray
 	/y exch def
@@ -49,10 +57,12 @@ end } def
 	stroke
 end } def
 
+% This is an internal function called by the dt function to
+% create each individual triangle of the equilateral triangle
 %This function takes 5 inputs: x,y,c,o,i
 % the x and y coordinates of the center of the triangle
 % c is the color of the triangle (0-2) (where r=0,g=1,b=2)
-% o is the orientation of the triangle (0-2)
+% o is the orientation of the triangle (0-2) (where 0=0 degrees, 1=120 degrees, 2=240 degrees)
 % i is the intensity of the color (0-9) (higher number = brighter)
 /dtpiece { 5 dict begin
 	/i exch def
@@ -94,6 +104,8 @@ end } def
 	360 o 120 mul sub rotate		%Resets the rotation to upright
 end } def
 	
+% This is the DrawTriangle function.
+% Given appropriate input, it outputs a desired triangle
 % This function takes 5 inputs: x,y,r,g,b
 % x,y are the coordinates of the center of the triangle
 % r,g,b are the degree of red, blue and green in the triangle.
@@ -106,30 +118,24 @@ end } def
 	/x exch def
 	
 	%Drawing the red green and blue triangles
-	x y 0 fillTriangle
-	x y 0 0 r dtpiece
-	x y 1 1 g dtpiece
-	x y 2 2 b dtpiece
-	x y outlineTriangle
+	x y 0 fillTriangle				%filling the triangle with black
+	x y 0 0 r dtpiece				%making the red portion on the base
+	x y 1 1 g dtpiece				%making the green portion on side
+									%that is 120 degrees rotated from the x-axis
+	x y 2 2 b dtpiece				%making the blue portion on the final side
+	x y outlineTriangle				%Outlining the triangle with black
 	
 end } def
 
-% -4 0 0 0 0 dtpiece
-% -3 0 0 0 1 dtpiece
-% -2 0 0 0 2 dtpiece
-% -1 0 0 0 3 dtpiece
-% 0 0 0 0 4 dtpiece
-% 1 0 0 0 5 dtpiece
-% 2 0 0 0 6 dtpiece
-% 3 0 0 0 7 dtpiece
-% 4 0 0 0 8 dtpiece
-% 5 0 0 0 9 dtpiece
-
+%Sample Outputs
+%Bottom row
 -2 0 0 0 0 dt
 -1 0 3 3 3 dt
 0 0 5 5 5 dt
 1 0 7 7 7 dt
 2 0 9 9 9 dt
+
+%Top row
 -2 1 7 0 0 dt
 -1 1 9 5 3 dt
 0 1 9 9 3 dt
