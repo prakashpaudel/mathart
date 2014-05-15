@@ -1,5 +1,6 @@
 from pyx import *
 from math import *
+from picture import Picture
 
 # Global Constants
 s = 1.0
@@ -124,12 +125,10 @@ def middle_intersection_helper(c, path1a, path1b, path2a, path2b, path3a, path3b
     b_p2_len1 = path3a
     c_p1_len1 = path3b
 
-
     #split1
     isect_p1, isect_p2 = p1_inter.intersect(a_p1_len1)
     p1_len1, p1_len2 = p1_inter.split(isect_p1)
     p2_len1, p2_len2 = a_p1_len1.split(isect_p2)
-
 
     #split2
     isect_p3, isect_p4 = p2_inter.intersect(a_p2_len1)
@@ -198,24 +197,37 @@ def draw_triangle(c,x,y,r,g,b):
     pBlue = draw_rgb(c,x,y,"blue",2,b)
 
     fill_intersections(c,pRed,pGreen,pBlue,r,g,b)
-    
-    
+
 #Main Commands
 c = canvas.canvas()
+p = Picture("whitetriangle.jpg")
+
+width, height = p.getWidth(), p.getHeight()
+
+##for xp in range(width):
+##    for yp in range(height):
+##        rp,gp,bp = p.getPixelColor(xp,yp)
+##        r, g, b = floor(rp/25.6),floor(gp/25.6),floor(bp/25.6)
+####        print (xp,yp,r,g,b)
+##        
+##        draw_triangle(c,xp,(height-yp)*h,r,g,b)
+
 
 #All possible values
-count=0
-for i in range(0,L):
-    for j in range(0,L):
-        for k in range(0,L):
-##            print(i,j,k,count)
-            draw_triangle(c,count % L,floor(count/L),i,j,k)
-            count +=1
+##count=0
+##for i in range(0,L):
+##    for j in range(0,L):
+##        for k in range(0,L):
+####            print(i,j,k,count)
+##            draw_triangle(c,count % L,floor(count/L),i,j,k)
+##            count +=1
 
-##draw_triangle(c,0,0,9,9,9)
-##draw_triangle(c,1,0,9,9,4)
-##draw_triangle(c,2,0,9,4,9)
-##draw_triangle(c,3,0,4,9,9)
+draw_triangle(c,0,0,9,9,9)
+##draw_triangle(c,1,0,1,9,9)
+##draw_triangle(c,2,0,9,1,9)
+
+
+
 
 c.writeEPSfile()
 c.writePDFfile()
